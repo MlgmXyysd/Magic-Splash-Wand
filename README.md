@@ -11,23 +11,15 @@ Unpacking and packaging for Qualcomm splash images.
 3. Open the terminal and use PHP interpreter to execute the [script](splash.php) with the usage.
 4. Wait for the script to run.
 
-## Changelog
-- v1.1:
-    - Implement repack
-- v1.0:
-    - First ver
-
-## TO-DOs
-- [ ] Package method: Raw
-- [ ] Image format support: GD, GD2, WBMP, WEBP, XBM, XPM
-
 ## Workaround
 While cracking the BootLoader of OPPO Watch 2 eSIM Series, I got interested in its Splash. It's format is not quite the same as the [script provided by Qualcomm](https://source.codeaurora.org/quic/la/device/qcom/common/tree/display/logo/logo_gen.py?h=LA.UM.9.6.2.c25).
 
 After analysis, it contains multiple logos and store information with the structure below:
 ```
 Splash
+│
 ├── Header
+│   │
 │   ├──(header structure)
 │   │   │
 │   │   │      *** Splash Identity ***
@@ -86,6 +78,16 @@ The original script was so old that it didn't even support Python 3.x. It's a pa
 Out of distaste for Python syntax, I rewrote the script in PHP and added unpacking support.
 
 Have fun :)
+
+## TO-DOs
+- [ ] Package method: Raw
+- [ ] Image format support: GD, GD2, WBMP, WEBP, XBM, XPM
+
+## Changelog
+- v1.1:
+    - Implement repack
+- v1.0:
+    - First ver
 
 ## License
 No license, you are only allowed to use this project. All rights are reserved by [MeowCat Studio](https://github.com/MeowCat-Studio), [Meow Mobile](https://github.com/Meow-Mobile) and [MlgmXyysd](https://github.com/MlgmXyysd).
