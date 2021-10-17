@@ -10,6 +10,8 @@
 /**
  * 
  * Magic Splash!! Wand
+ *
+ * https://github.com/MlgmXyysd/Magic-Splash-Wand
  * 
  * Unpacking and packaging for Qualcomm splash images
  * 
