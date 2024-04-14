@@ -13,14 +13,14 @@
  *
  * https://github.com/MlgmXyysd/Magic-Splash-Wand
  *
- * Unpacking and packaging for OPlus Qualcomm splash images
+ * Tool for unpacking and packaging splash image for OPlus Qualcomm devices
  *
  * Environment requirement:
- *   - PHP 8.0+
+ *   - PHP 8.1.0+
  *   - GD Extension
  *
  * @author NekoYuzu (MlgmXyysd)
- * @version 1.0
+ * @version 1.1
  *
  * All copyright in the software is not allowed to be deleted
  * or changed without permission.
@@ -131,7 +131,7 @@ function read_unsigned(array $payload, int $offset): int
  * Print usage
  * @param  $self  string  required  Self name
  * @author NekoYuzu (MlgmXyysd)
- * @date   2024/04/14 14:30:26
+ * @date   2024/04/14 20:35:43
  */
 
 function usage(string $self): void
@@ -144,10 +144,9 @@ function usage(string $self): void
     logf("Notes:", "y", "*");
     logf("1. The default output dir is \"output\" and the", "y", "*");
     logf("   default output image is \"splash.img\";", "y", "*");
-    logf("2. Image currently can be a BMP file only.", "y", "*");
-	// TODO: support more formats
-    // logf("2. Image can be a PNG, JPEG, BMP, GIF file. But", "y", "*");
-    // logf("   if it is a GIF, only get the first frame.", "y", "*");
+    logf("2. Supported formats are AVIF, BMP, GD2, GD, GIF,", "y", "*");
+    logf("   JPEG, PNG, TGA, WBMP, WEBP, XBM, XPM. But if", "y", "*");
+    logf("   it is a GIF, only get the first frame.", "y", "*");
 }
 
 /***********************
@@ -161,7 +160,7 @@ function usage(string $self): void
 logf("******************************************", "g");
 logf("* Magic Splash Logo! Wand                *", "g");
 logf("*             for OPlus Qualcomm devices *", "g");
-logf("* By NekoYuzu (MlgmXyysd)    Version 1.0 *", "g");
+logf("* By NekoYuzu (MlgmXyysd)    Version 1.1 *", "g");
 logf("******************************************", "g");
 logf("GitHub: https://github.com/MlgmXyysd");
 logf("XDA: https://xdaforums.com/m/mlgmxyysd.8430637");
@@ -185,7 +184,7 @@ if ($argc < 2) {
 
 ini_set("memory_limit", "-1");
 
-if ($argv[1] === "unpack") {
+if (strcasecmp($argv[1], "unpack") === 0) {
     logf("Operation: Unpack splash image", "y");
 
     if ($argc < 3) {
@@ -225,7 +224,7 @@ if ($argv[1] === "unpack") {
     logf("Analyzing payload header...");
 
     $splash_magic = merge($splash_logo_header, 0, 12);
-    if ($splash_magic !== $magic_header) {
+    if (strcmp($splash_magic, $magic_header) !== 0) {
         logf("Magic header mismatched, except $magic_header, but found $splash_magic", "r", "!", "e");
         exit();
     }
@@ -298,7 +297,7 @@ if ($argv[1] === "unpack") {
     $splash_description = array();
 
     foreach ($descriptions as $desc) {
-        if ($desc !== "") {
+        if (strcasecmp($desc, "") !== 0) {
             $splash_description[] = base64_encode($desc);
         }
     }
@@ -306,7 +305,7 @@ if ($argv[1] === "unpack") {
     $splash_metadata = array("c" => $splash_compress, "d" => $splash_description, "h" => $splash_height, "p" => base64_encode(gzencode($splash_padding)), "s" => $splash_names, "v" => $splash_version, "w" => $splash_width);
 
     file_put_contents($output . DIRECTORY_SEPARATOR . ".metadata", json_encode($splash_metadata, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK));
-} else if ($argv[1] === "repack") {
+} else if (strcasecmp($argv[1], "repack") === 0) {
     logf("Operation: Repack splash image", "y");
 
     if ($argc < 3) {
@@ -367,7 +366,7 @@ if ($argv[1] === "unpack") {
     $image_line = array();
 
     while (($file = readdir($dir)) !== false) {
-        if ($file !== "." && $file !== ".." && $file !== ".metadata") {
+        if (strcasecmp($file, ".") !== 0 && strcasecmp($file, "..") !== 0 && strcasecmp($file, ".metadata") !== 0) {
             $file = $input . $file;
 
             $file_info = pathinfo($file);
@@ -377,18 +376,23 @@ if ($argv[1] === "unpack") {
 
             if ($image_info) {
                 $image_type = match ($image_info[2]) {
-                    // TODO: support more formats
-                    // 1 => "GIF",
-                    // 2 => "JPG",
-                    // 3 => "PNG",
-                    6 => "BMP",
-                    default => false
+                    IMAGETYPE_GIF => "GIF",
+                    IMAGETYPE_JPEG, IMAGETYPE_JPEG2000 => "JPEG",
+                    IMAGETYPE_PNG => "PNG",
+                    IMAGETYPE_BMP => "BMP",
+                    IMAGETYPE_WBMP => "WBMP",
+                    IMAGETYPE_XBM => "XBM",
+                    IMAGETYPE_WEBP => "WEBP",
+                    IMAGETYPE_AVIF => "AVIF",
+                    default => strtoupper($file_info["extension"])
                 };
             }
 
-            if ($image_type) {
-                $image_line[$file_info["filename"]] = array($file_info["extension"], $image_type);
+            if (isset($image_line[$file_info["filename"]]) && strcasecmp($image_line[$file_info["filename"]][1], "BMP") === 0) {
+                continue;
             }
+
+            $image_line[$file_info["filename"]] = array($file_info["extension"], $image_type);
         }
     }
 
@@ -418,12 +422,19 @@ if ($argv[1] === "unpack") {
         $file = $input . $data[0] . "." . $data[1];
 
         $image = match ($data[2]) {
-            // TODO: support more formats
-            // "GIF": => imagecreatefromgif($file),
-            // "JPG": => imagecreatefromjpeg($file),
-            // "PNG" => imagecreatefrompng($file),
-            "BMP" => file_get_contents($file),
-            default => false
+            "AVIF" => imagecreatefromavif($file),
+            "BMP" => true,
+            "GD2" => imagecreatefromgd2($file),
+            "GD" => imagecreatefromgd($file),
+            "GIF" => imagecreatefromgif($file),
+            "JPEG" => imagecreatefromjpeg($file),
+            "PNG" => imagecreatefrompng($file),
+            "TGA" => imagecreatefromtga($file),
+            "WBMP" => imagecreatefromwbmp($file),
+            "WEBP" => imagecreatefromwebp($file),
+            "XBM" => imagecreatefromxbm($file),
+            "XPM" => imagecreatefromxpm($file),
+            default => imagecreatefromstring(file_get_contents($file))
         };
 
         if (!$image) {
@@ -432,16 +443,14 @@ if ($argv[1] === "unpack") {
             continue;
         }
 
-        if (is_resource($image) && get_resource_type($image) === "gd") {
-            if (!imageistruecolor($image)) {
-                logf("    Image format unsupported, skipping...", "y", "-", "w");
-                $splash_count--;
-                continue;
-            }
-            // TODO: convert to BMP
-            logf("    Non bitmap image currently not supported, skipping...", "y", "-", "w");
-            $splash_count--;
-            continue;
+        if ($image === true) {
+            $image = file_get_contents($file);
+        } else {
+            logf("    Converting to BMP format...");
+            ob_start();
+            imagebmp($image);
+            imagedestroy($image);
+            $image = ob_get_clean();
         }
 
         if ($metadata["c"]) {

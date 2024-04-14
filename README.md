@@ -1,5 +1,5 @@
 # Magic Splash Wand
-![Version: 1.2](https://img.shields.io/badge/Version-1.2-brightgreen?style=for-the-badge) ![OPlus Version: 1.0](https://img.shields.io/badge/Version-OPlus%201.0-brightgreen?style=for-the-badge)
+![Version: 1.2](https://img.shields.io/badge/Version-1.2-brightgreen?style=for-the-badge) ![OPlus Version: 1.1](https://img.shields.io/badge/Version-OPlus%201.1-brightgreen?style=for-the-badge)
 
 Magic Splash!! Wand
 
@@ -12,7 +12,7 @@ Tool for unpacking and packaging splash image for OPlus Qualcomm devices.
 ## How to use
 1. Download and install PHP 8.1.0+ for your system from the [official website](https://www.php.net/downloads).
 2. Enable GD extension in `php.ini`.
-3. Open the terminal and use PHP interpreter to execute the [script](splash.php) or [oplus script](splash_oplus.php) with the usage.
+3. Open the terminal and use PHP interpreter to execute the [script](splash.php) or [script (for oplus)](splash_oplus.php) with the usage.
 4. Wait for the script to run.
 
 ## Workaround
@@ -162,7 +162,7 @@ Have fun :)
 	- [ ] Add supports for Raw package method
 	- [x] ~~Add supports for AVIF, GD2, GD, TGA, WBMP, WEBP, XBM, XPM, etc. image formats~~
 - Magic Splash Logo! Wand
-	- [ ] Add supports for AVIF, GD2, GD, GIF, JPEG, PNG, TGA, WBMP, WEBP, XBM, XPM, etc. image formats
+	- [x] ~~Add supports for AVIF, GD2, GD, GIF, JPEG, PNG, TGA, WBMP, WEBP, XBM, XPM, etc. image formats~~
 
 ## Changelog
 - Magic Splash!! Wand
@@ -174,6 +174,8 @@ Have fun :)
 	- v1.0:
 		- First ver
 - Magic Splash Logo! Wand
+	- v1.1:
+		- Add supports for AVIF, GD2, GD, GIF, JPEG, PNG, TGA, WBMP, WEBP, XBM, XPM, etc. image formats
 	- v1.0:
 		- First ver
 
