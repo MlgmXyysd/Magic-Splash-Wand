@@ -12,7 +12,7 @@ Tool for unpacking and packaging splash image for OPlus Qualcomm devices.
 ## How to use
 1. Download and install PHP 8.1.0+ for your system from the [official website](https://www.php.net/downloads).
 2. Enable GD extension in `php.ini`.
-3. Open the terminal and use PHP interpreter to execute the [script](splash.php) or [oplus script](script_oplus.php) with the usage.
+3. Open the terminal and use PHP interpreter to execute the [script](splash.php) or [oplus script](splash_oplus.php) with the usage.
 4. Wait for the script to run.
 
 ## Workaround
