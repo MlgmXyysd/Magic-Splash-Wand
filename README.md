@@ -1,11 +1,13 @@
 # Magic Splash Wand
-![Version: 1.2](https://img.shields.io/badge/Version-1.2-brightgreen?style=for-the-badge) ![OPlus Version: 1.1](https://img.shields.io/badge/Version-OPlus%201.1-brightgreen?style=for-the-badge)
+![Version: 1.2](https://img.shields.io/badge/Version-1.2-brightgreen?style=for-the-badge) ![OPlus Version: 1.2](https://img.shields.io/badge/Version-OPlus%201.2-brightgreen?style=for-the-badge)
 
-Magic Splash!! Wand
+Magic Splash Wand is a set of scripts for unpacking and packaging the splash screen of Qualcomm series devices on boot, powered by PHP.
+
+- Magic Splash!! Wand
 
 Tool for unpacking and packaging splash image for Qualcomm devices.
 
-Magic Splash Logo! Wand
+- Magic Splash Logo! Wand
 
 Tool for unpacking and packaging splash image for OPlus Qualcomm devices.
 
@@ -167,17 +169,20 @@ Have fun :)
 ## Changelog
 - Magic Splash!! Wand
 	- v1.2:
-		- Add supports for AVIF, GD2, GD, TGA, WBMP, WEBP, XBM, XPM, etc. image formats
-		- Refine
+		- Add supports for AVIF, GD2, GD, TGA, WBMP, WEBP, XBM, XPM, etc. image formats.
+		- Optimized code logic.
+		- Upgraded PHP requirement to 8.1.0.
 	- v1.1:
-		- Implement repack
+		- Implemented repack feature.
 	- v1.0:
-		- First ver
+		- Support splash screen format Qualcomm devices
 - Magic Splash Logo! Wand
+	- v1.2:
+		- Optimized log output.
 	- v1.1:
-		- Add supports for AVIF, GD2, GD, GIF, JPEG, PNG, TGA, WBMP, WEBP, XBM, XPM, etc. image formats
+		- Add supports for AVIF, GD2, GD, GIF, JPEG, PNG, TGA, WBMP, WEBP, XBM, XPM, etc. image formats.
 	- v1.0:
-		- First ver
+		- Support splash screen format for OPlus (OPPO/OnePlus/Realme) Qualcomm devices
 
 ## License
 No license, you are only allowed to use this project. All rights are reserved by [MeowCat Studio](https://github.com/MeowCat-Studio), [Meow Mobile](https://github.com/Meow-Mobile) and [NekoYuzu (MlgmXyysd)](https://github.com/MlgmXyysd).

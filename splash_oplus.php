@@ -20,7 +20,7 @@
  *   - GD Extension
  *
  * @author NekoYuzu (MlgmXyysd)
- * @version 1.1
+ * @version 1.2
  *
  * All copyright in the software is not allowed to be deleted
  * or changed without permission.
@@ -160,7 +160,7 @@ function usage(string $self): void
 logf("******************************************", "g");
 logf("* Magic Splash Logo! Wand                *", "g");
 logf("*             for OPlus Qualcomm devices *", "g");
-logf("* By NekoYuzu (MlgmXyysd)    Version 1.1 *", "g");
+logf("* By NekoYuzu (MlgmXyysd)    Version 1.2 *", "g");
 logf("******************************************", "g");
 logf("GitHub: https://github.com/MlgmXyysd");
 logf("XDA: https://xdaforums.com/m/mlgmxyysd.8430637");
@@ -246,7 +246,7 @@ if (strcasecmp($argv[1], "unpack") === 0) {
     logf("Splash description: " . json_encode($descriptions));
     logf("Splash version: $splash_version");
     logf("Splash size: " . $splash_width . "x" . $splash_height);
-    logf("GZIP compression enabled: $splash_compress");
+    logf("GZIP compression enabled: " . ($splash_compress ? "true" : "false"));
     logf("Found $splash_count images in payload.");
 
     $cursor = 288;
