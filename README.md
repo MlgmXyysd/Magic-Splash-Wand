@@ -1,5 +1,5 @@
 # Magic Splash Wand
-![Version: 1.1](https://img.shields.io/badge/Version-1.1-brightgreen?style=for-the-badge) ![OPlus Version: 1.0](https://img.shields.io/badge/Version-OPlus%201.0-brightgreen?style=for-the-badge)
+![Version: 1.2](https://img.shields.io/badge/Version-1.2-brightgreen?style=for-the-badge) ![OPlus Version: 1.0](https://img.shields.io/badge/Version-OPlus%201.0-brightgreen?style=for-the-badge)
 
 Magic Splash!! Wand
 
@@ -22,7 +22,7 @@ After analysis, it contains multiple logos and store information with the struct
 ```
 Splash Payload (0x0)
 │
-├── Header (0x0)
+├── Header [0x200] (0x0)
 │   │
 │   ├──(header structure) [0xC] (0x0)
 │   │   │
@@ -62,7 +62,7 @@ Splash Payload (0x0)
 │   │
 │   └── ...
 │
-└── Payload data
+└── Payload data (0x200)
     │
     │      *** Content 1 data ***
     │
@@ -159,13 +159,16 @@ Have fun :)
 
 ## TO-DOs
 - Magic Splash!! Wand
-	- [ ] Package method: Raw
-	- [ ] Image format support: GD, GD2, WBMP, WEBP, XBM, XPM
+	- [ ] Add supports for Raw package method
+	- [x] ~~Add supports for AVIF, GD2, GD, TGA, WBMP, WEBP, XBM, XPM, etc. image formats~~
 - Magic Splash Logo! Wand
-	- [ ] Supports more image format
+	- [ ] Add supports for AVIF, GD2, GD, GIF, JPEG, PNG, TGA, WBMP, WEBP, XBM, XPM, etc. image formats
 
 ## Changelog
 - Magic Splash!! Wand
+	- v1.2:
+		- Add supports for AVIF, GD2, GD, TGA, WBMP, WEBP, XBM, XPM, etc. image formats
+		- Refine
 	- v1.1:
 		- Implement repack
 	- v1.0:
