@@ -1,14 +1,18 @@
 # Magic Splash Wand
-![Version: 1.1](https://img.shields.io/badge/Version-1.1-brightgreen?style=for-the-badge)
+![Version: 1.1](https://img.shields.io/badge/Version-1.1-brightgreen?style=for-the-badge) ![OPlus Version: 1.0](https://img.shields.io/badge/Version-OPlus%201.0-brightgreen?style=for-the-badge)
 
 Magic Splash!! Wand
 
-Unpacking and packaging for Qualcomm splash images.
+Tool for unpacking and packaging splash image for Qualcomm devices.
+
+Magic Splash Logo! Wand
+
+Tool for unpacking and packaging splash image for OPlus Qualcomm devices.
 
 ## How to use
-1. Download and install PHP for your system from the [official website](https://www.php.net/downloads).
+1. Download and install PHP 8.1.0+ for your system from the [official website](https://www.php.net/downloads).
 2. Enable GD extension in `php.ini`.
-3. Open the terminal and use PHP interpreter to execute the [script](splash.php) with the usage.
+3. Open the terminal and use PHP interpreter to execute the [script](splash.php) or [oplus script](script_oplus.php) with the usage.
 4. Wait for the script to run.
 
 ## Workaround
@@ -16,31 +20,31 @@ While cracking the BootLoader of OPPO Watch 2 eSIM Series, I got interested in i
 
 After analysis, it contains multiple logos and store information with the structure below:
 ```
-Splash
+Splash Payload (0x0)
 │
-├── Header
+├── Header (0x0)
 │   │
-│   ├──(header structure)
+│   ├──(header structure) [0xC] (0x0)
 │   │   │
 │   │   │      *** Splash Identity ***
 │   │   │
-│   │   ├── char[8] magic;      <--- magic header, "SPLASH!!"
+│   │   ├── char[0x8] magic;      <--- magic header, "SPLASH!!"
 │   │   │
 │   │   │      *** Content Identity ***
 │   │   │
 │   │   └── unsigned number;    <--- number of logos, little endian
 │   │
-│   ├──(logo structure)
+│   ├──(logo structure) [0x14] (0xC)
 │   │   │
 │   │   │      *** Content 1 Information ***
 │   │   │
-│   │   ├── unsigned width;     <--- logo's width, little endian
-│   │   ├── unsigned height;    <--- logo's height, little endian
-│   │   ├── unsigned type;      <--- 0, Raw Image; 1, RLE24 Compressed Image
-│   │   ├── unsigned blocks;    <--- block number, real size / 512
-│   │   └── unsigned offset;    <--- offset of logo's content, little endian
+│   │   ├── unsigned width;     <--- image's width, little endian
+│   │   ├── unsigned height;    <--- image's height, little endian
+│   │   ├── unsigned type;      <--- flag for compression, 0: Raw Image; 1: RLE24 Compressed Image
+│   │   ├── unsigned blocks;    <--- block size, real size / 512
+│   │   └── unsigned offset;    <--- offset of image's content, little endian
 │   │
-│   ├──(logo structure)
+│   ├──(logo structure) [0x14] (0x20)
 │   │   │
 │   │   │      *** Content 2 Information ***
 │   │   │
@@ -50,7 +54,7 @@ Splash
 │   │   ├── unsigned blocks;
 │   │   └── unsigned offset;
 │   │
-│   ├──(logo structure)
+│   ├──(logo structure) [0x14] (0x34)
 │   │   │
 │   │   │      *** Content N Information ***
 │   │   ├── ...
@@ -62,7 +66,7 @@ Splash
     │
     │      *** Content 1 data ***
     │
-    ├── (data)     <--- logo's content
+    ├── (data)     <--- image's content
     │
     │      *** Content 1 data ***
     │
@@ -77,17 +81,98 @@ The original script was so old that it didn't even support Python 3.x. It's a pa
 
 Out of distaste for Python syntax, I rewrote the script in PHP and added unpacking support.
 
+-- Update --
+
+Qualcomm devices from OPlus (OPPO/OnePlus/Realme) use a different but similar format to the above.
+
+Combined with the Qualcomm structure, the analysis resulted in the following structure:
+```
+Splash Payload (0x0)
+│
+├── Padding [0x4000] (0x0)    <--- padding before the header, usually empty
+│
+├── Header [0x4000] (0x4000)
+│   │
+│   ├──(header structure) [0x120] (0x4000)
+│   │   │
+│   │   │      *** Splash Identity ***
+│   │   │
+│   │   ├── char[0xB] magic;     <--- magic header, "SPLASH LOGO!"
+│   │   ├── char[0x40] desc1;    <--- description of this splash file (1)
+│   │   ├── char[0x40] desc2;    <--- description of this splash file (2)
+│   │   ├── char[0x40] desc3;    <--- description of this splash file (3)
+│   │   ├── char[0x40] desc4;    <--- description of this splash file (4)
+│   │   │
+│   │   │      *** Content Identity ***
+│   │   │
+│   │   ├── unsigned number;      <--- number of logos, little endian
+│   │   ├── unsigned version;     <--- version of this splash image, little endian, current 4
+│   │   ├── unsigned width;       <--- screen width, little endian
+│   │   ├── unsigned height;      <--- screen height, little endian
+│   │   └── unsigned compress;    <--- flag for compression, 0: Raw Image; 1: GZIP Compressed Image
+│   │
+│   ├──(logo structure) [0x80] (0x4120)
+│   │   │
+│   │   │      *** Content 1 Information ***
+│   │   │
+│   │   ├── unsigned offset;       <--- offset of image's content, little endian
+│   │   ├── unsigned real_size;    <--- content real size (decompressed if GZIP compressed)
+│   │   ├── unsigned data_size;    <--- payload data size
+│   │   └── char[0x74] name;       <--- content file name, extension is ".bmp"
+│   │
+│   ├──(logo structure) [0x80] (0x41A0)
+│   │   │
+│   │   │      *** Content 2 Information ***
+│   │   │
+│   │   ├── unsigned offset;
+│   │   ├── unsigned real_size;
+│   │   ├── unsigned data_size;
+│   │   └── char[0x74] name;
+│   │
+│   ├──(logo structure) [0x80] (0x4220)
+│   │   │
+│   │   │      *** Content N Information ***
+│   │   ├── ...
+│   │   └── ...
+│   │
+│   └── ...
+│
+└── Payload data (0x8000)
+    │
+    │      *** Content 1 data ***
+    │
+    ├── (data)    <--- image's content
+    │
+    │      *** Content 1 data ***
+    │
+    ├── (data)
+    │
+    │      *** Content N data ***
+    │
+    ├── ...
+    └── ...
+```
+
+Compression format was changed from RLE24 to GZIP (magic number `1F 8B 08 00`). Device is confirmed to be able to load content at the maximum compression level.
+
 Have fun :)
 
 ## TO-DOs
-- [ ] Package method: Raw
-- [ ] Image format support: GD, GD2, WBMP, WEBP, XBM, XPM
+- Magic Splash!! Wand
+	- [ ] Package method: Raw
+	- [ ] Image format support: GD, GD2, WBMP, WEBP, XBM, XPM
+- Magic Splash Logo! Wand
+	- [ ] Supports more image format
 
 ## Changelog
-- v1.1:
-    - Implement repack
-- v1.0:
-    - First ver
+- Magic Splash!! Wand
+	- v1.1:
+		- Implement repack
+	- v1.0:
+		- First ver
+- Magic Splash Logo! Wand
+	- v1.0:
+		- First ver
 
 ## License
-No license, you are only allowed to use this project. All rights are reserved by [MeowCat Studio](https://github.com/MeowCat-Studio), [Meow Mobile](https://github.com/Meow-Mobile) and [MlgmXyysd](https://github.com/MlgmXyysd).
+No license, you are only allowed to use this project. All rights are reserved by [MeowCat Studio](https://github.com/MeowCat-Studio), [Meow Mobile](https://github.com/Meow-Mobile) and [NekoYuzu (MlgmXyysd)](https://github.com/MlgmXyysd).
