@@ -12,7 +12,7 @@ Unpacking and packaging for Qualcomm splash images.
 4. Wait for the script to run.
 
 ## Workaround
-While cracking the BootLoader of OPPO Watch 2 eSIM Series, I got interested in its Splash. It's format is not quite the same as the [script provided by Qualcomm](https://source.codeaurora.org/quic/la/device/qcom/common/tree/display/logo/logo_gen.py?h=LA.UM.9.6.2.c25).
+While cracking the BootLoader of OPPO Watch 2 eSIM Series, I got interested in its Splash. It's format is not quite the same as the [script provided by Qualcomm](https://git.codelinaro.org/clo/la/device/qcom/common/-/blob/LA.VENDOR.14.3.0.r1-11500-lanai.0/display/logo/logo_gen.py).
 
 After analysis, it contains multiple logos and store information with the structure below:
 ```
